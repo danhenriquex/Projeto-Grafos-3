@@ -1,6 +1,10 @@
 #include "grafo.h"
 #include <queue>
 #include <stack>
+#include <ctime>
+#include <cstdlib>
+#include "superNo.h"
+
 
 Grafo::Grafo( void ) {
 
@@ -26,20 +30,47 @@ Grafo::Grafo( const string& file ) {
 
       for ( int i = 0; i < value.length(); ++i ) {
         if ( value[i] == ' ') continue;
-          line.push_back( this->changeCharToInt(value[i]) ); 
+          line.push_back( this->changeCharToInt( value[i]) ); 
       }
 
-      this->matrix_.push_back(line);
+      this->matrix_.push_back( line );
     }
 
     for ( int i = 0; i < this->getSize(); ++ i ) {
       for ( int j = 0; j < this->getSize(); ++j ) {
         if ( this->matrix_[i][j] == 1) {
-          this->adj_[i].push_back(j);
+          this->adj_[i].push_back( j );
         }
       }
     }
   }
+}
+
+void Grafo::kargerAlgorithm( void ) {
+  auto criaArestas = []( const int& size ) {
+    srand(time(0));
+
+    int i, j;
+
+    do {
+
+      i = rand() % size;
+      j = rand() % size;
+
+    } while( i == j );
+
+    Arestas no( i, j );
+
+    return no;
+  };
+
+  auto x = criaArestas(10);
+  std::cout << "x" << x.i_ << "y" << x.j_ << std::endl;
+
+  if( this->matrix_[x.i_][x.j_] == 1 ) {
+    std::cout << "entrou aqui" << std::endl;
+  }
+
 }
 
 void Grafo::busca( const int& v, int* PE, int* PS, int* Pai ) {
@@ -161,14 +192,22 @@ void Grafo::bfs( const int& edge ) {
   }
 }
 
-void Grafo::showAdjacency( const int& edge ) {
-  
+void Grafo::showAdjacency( const int& edge = 0 ) {
   std::cout << "vertice: " << edge << " => ";
     for ( int edges : this->adj_[edge] ) {
-    std::cout << edges << " ";
+      std::cout << edges << " ";
     }
   std::cout << std::endl;
+}
 
+void Grafo::showAdjacency( void ) {
+  for (int i = 0; i < this->getSize(); i++){
+    std::cout << "vertice: " << i << " => ";
+    for ( int edges : this->adj_[i] ) {
+      std::cout << edges << " ";
+    }
+  std::cout << std::endl;
+  }
 }
 
 void Grafo::showMatrix( void ) {
