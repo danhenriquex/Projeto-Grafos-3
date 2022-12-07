@@ -1,6 +1,10 @@
 #include "grafo.h"
 #include <queue>
 #include <stack>
+#include <ctime>
+#include <cstdlib>
+#include "superNo.h"
+
 
 Grafo::Grafo( void ) {
 
@@ -26,20 +30,64 @@ Grafo::Grafo( const string& file ) {
 
       for ( int i = 0; i < value.length(); ++i ) {
         if ( value[i] == ' ') continue;
-          line.push_back( this->changeCharToInt(value[i]) ); 
+          line.push_back( this->changeCharToInt( value[i]) ); 
       }
 
-      this->matrix_.push_back(line);
+      this->matrix_.push_back( line );
     }
 
     for ( int i = 0; i < this->getSize(); ++ i ) {
       for ( int j = 0; j < this->getSize(); ++j ) {
         if ( this->matrix_[i][j] == 1) {
-          this->adj_[i].push_back(j);
+          this->adj_[i].push_back( j );
         }
       }
     }
   }
+}
+
+void Grafo::kargerAlgorithm( void ) {
+  std::vector<Arestas> arestas;
+  std::vector<SuperNo> supernos;
+
+  for ( int i = 0; i < this->getSize(); ++ i ) {
+
+    for ( int j = 0; j < this->getSize(); ++j ) {
+
+      if ( this->matrix_[i][j] == 1 ) {
+
+        Arestas aresta = Arestas( i, j );
+
+        arestas.push_back( aresta );
+
+      }
+    }
+  }
+
+  for ( int i = 0; i < this->matrix_.size(); ++i ) {
+    SuperNo superno = SuperNo( i );
+
+    supernos.push_back( superno );
+  }
+
+  for ( const auto& edge : arestas ) {
+    cout << edge.i_ << " " << edge.j_ << endl;
+  }
+
+  printf("\n========================\n");
+
+  for ( const auto& supernos : supernos ) {
+    cout << supernos.noId_ << endl;
+  }
+
+  srand(time(0));
+
+  const int randomIndex = rand() % arestas.size();
+
+  std::cout << "randomIndex: " << randomIndex << std::endl;
+  std::cout << "arestas[randomIndex].i_: " << arestas[randomIndex].i_ << std::endl;
+  std::cout << "arestas[randomIndex].j_: " << arestas[randomIndex].j_ << std::endl;
+
 }
 
 void Grafo::busca( const int& v, int* PE, int* PS, int* Pai ) {
@@ -161,14 +209,22 @@ void Grafo::bfs( const int& edge ) {
   }
 }
 
-void Grafo::showAdjacency( const int& edge ) {
-  
+void Grafo::showAdjacency( const int& edge = 0 ) {
   std::cout << "vertice: " << edge << " => ";
     for ( int edges : this->adj_[edge] ) {
-    std::cout << edges << " ";
+      std::cout << edges << " ";
     }
   std::cout << std::endl;
+}
 
+void Grafo::showAdjacency( void ) {
+  for (int i = 0; i < this->getSize(); i++){
+    std::cout << "vertice: " << i << " => ";
+    for ( int edges : this->adj_[i] ) {
+      std::cout << edges << " ";
+    }
+  std::cout << std::endl;
+  }
 }
 
 void Grafo::showMatrix( void ) {

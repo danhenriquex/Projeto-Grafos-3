@@ -14,8 +14,10 @@
 int main( void ) {
 
     Grafo grafo = Grafo("./arquivos_testes/graph_type1_1.txt");
+
+    grafo.showAdjacency();
     
-    grafo.dfs(0);
+    grafo.kargerAlgorithm();
     
     return 0;
 } 

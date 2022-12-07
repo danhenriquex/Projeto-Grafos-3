@@ -12,12 +12,16 @@ class Grafo {
     Grafo( void );
     Grafo( const string& file );
     
-    inline int getSize( void ) const;
     void dfs( const int& vertice );
     void bfs( const int& vertice );
+    void busca( const int& edge, int* PE, int* PS, int* Pai );
+    void kargerAlgorithm( void );
+
     void showMatrix( void );
     void showAdjacency( const int& edge );
-    void busca( const int& edge, int* PE, int* PS, int* Pai );
+    void showAdjacency( void );
+
+    inline int getSize( void ) const;
     int changeCharToInt( const char& ch );
 
   private:
