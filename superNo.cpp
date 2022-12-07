@@ -1,3 +1,7 @@
 #include "superNo.h"
 
-Arestas::Arestas( const int& i, const int& j ) : i_(i), j_(j) {}
+SuperNo::SuperNo( void ) {}
+
+SuperNo::SuperNo( const int& noId ) : noId_(noId) {
+  this->vertices_.push_back( noId ); 
+}

@@ -47,29 +47,46 @@ Grafo::Grafo( const string& file ) {
 }
 
 void Grafo::kargerAlgorithm( void ) {
-  auto criaArestas = []( const int& size ) {
-    srand(time(0));
+  std::vector<Arestas> arestas;
+  std::vector<SuperNo> supernos;
 
-    int i, j;
+  for ( int i = 0; i < this->getSize(); ++ i ) {
 
-    do {
+    for ( int j = 0; j < this->getSize(); ++j ) {
 
-      i = rand() % size;
-      j = rand() % size;
+      if ( this->matrix_[i][j] == 1 ) {
 
-    } while( i == j );
+        Arestas aresta = Arestas( i, j );
 
-    Arestas no( i, j );
+        arestas.push_back( aresta );
 
-    return no;
-  };
-
-  auto x = criaArestas(10);
-  std::cout << "x" << x.i_ << "y" << x.j_ << std::endl;
-
-  if( this->matrix_[x.i_][x.j_] == 1 ) {
-    std::cout << "entrou aqui" << std::endl;
+      }
+    }
   }
+
+  for ( int i = 0; i < this->matrix_.size(); ++i ) {
+    SuperNo superno = SuperNo( i );
+
+    supernos.push_back( superno );
+  }
+
+  for ( const auto& edge : arestas ) {
+    cout << edge.i_ << " " << edge.j_ << endl;
+  }
+
+  printf("\n========================\n");
+
+  for ( const auto& supernos : supernos ) {
+    cout << supernos.noId_ << endl;
+  }
+
+  srand(time(0));
+
+  const int randomIndex = rand() % arestas.size();
+
+  std::cout << "randomIndex: " << randomIndex << std::endl;
+  std::cout << "arestas[randomIndex].i_: " << arestas[randomIndex].i_ << std::endl;
+  std::cout << "arestas[randomIndex].j_: " << arestas[randomIndex].j_ << std::endl;
 
 }
 
