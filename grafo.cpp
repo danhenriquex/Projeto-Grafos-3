@@ -28,7 +28,7 @@ Grafo::Grafo( const string& file ) {
 
       std::vector<int> line;
 
-      for ( int i = 0; i < value.length(); ++i ) {
+      for ( int i = 0; i < int(value.length()); ++i ) {
         if ( value[i] == ' ') continue;
           line.push_back( this->changeCharToInt( value[i]) ); 
       }
@@ -54,7 +54,7 @@ void Grafo::kargerAlgorithm( void ) {
 
     for ( int j = 0; j < this->getSize(); ++j ) {
 
-      if ( this->matrix_[i][j] == 1 ) {
+      if ( this->matrix_[i][j] == 1 && i != j ) {
 
         Arestas aresta = Arestas( i, j );
 
@@ -64,31 +64,49 @@ void Grafo::kargerAlgorithm( void ) {
     }
   }
 
-  for ( int i = 0; i < this->matrix_.size(); ++i ) {
-    SuperNo superno = SuperNo( i );
+  for ( int i = 0; i < int(this->matrix_.size()); ++i ) {
+    SuperNo superno = SuperNo();
 
     supernos.push_back( superno );
   }
 
-  for ( const auto& edge : arestas ) {
-    cout << edge.i_ << " " << edge.j_ << endl;
+  // for ( const auto& edge : arestas ) {
+  //   cout << edge.i_ << " " << edge.j_ << endl;
+  // }
+
+  // printf("\n========================\n");
+
+  // for ( const auto& supernos : supernos ) {
+  //   cout << supernos.noId_ << endl;
+  // }
+
+  while ( supernos.size() > 2 ) {
+    Arestas currentEdge = this->getRandomAresta( arestas );
+
+    std::cout << "currentedge: " << currentEdge.i_ << " " << currentEdge.j_ << std::endl;
+
+    this->mergeSuperNo( currentEdge );
   }
 
-  printf("\n========================\n");
-
-  for ( const auto& supernos : supernos ) {
-    cout << supernos.noId_ << endl;
-  }
-
-  srand(time(0));
-
-  const int randomIndex = rand() % arestas.size();
-
-  std::cout << "randomIndex: " << randomIndex << std::endl;
-  std::cout << "arestas[randomIndex].i_: " << arestas[randomIndex].i_ << std::endl;
-  std::cout << "arestas[randomIndex].j_: " << arestas[randomIndex].j_ << std::endl;
 
 }
+
+void Grafo::mergeSuperNo( const Arestas& aresta ) {
+  std::cout << "aresta: " << aresta.i_ << " " << aresta.j_ << std::endl;
+
+  SuperNo newSuperNo = SuperNo( aresta.i_, aresta.j_ );
+
+
+
+}
+
+Arestas Grafo::getRandomAresta( const std::vector<Arestas>& arestas ) {
+  srand(time(0));
+
+  int randomIndex = rand() % arestas.size();
+  return arestas[randomIndex];
+}
+
 
 void Grafo::busca( const int& v, int* PE, int* PS, int* Pai ) {
   static int time = time + 1;
@@ -132,9 +150,6 @@ void Grafo::dfs( const int& edge ) {
   for ( int i = 0; i < this->size_; ++i ) {
     Pai[i] = 0;
   }
-
-  int v = 0;
-  int time = 0;
 
   this->busca( edge, Profunidade_entrada, Profunidade_saida, Pai );
 }
@@ -235,7 +250,6 @@ void Grafo::showMatrix( void ) {
     std::cout << endl;
   }
 }
-
 
 inline int Grafo::getSize( void ) const {
   return this->size_;
