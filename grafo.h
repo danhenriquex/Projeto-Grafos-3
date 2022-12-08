@@ -5,6 +5,8 @@
 #include <string>
 #include <bits/stdc++.h>
 
+#include "arestas.h"
+
 using namespace std;
 
 class Grafo {
@@ -20,8 +22,11 @@ class Grafo {
     void showMatrix( void );
     void showAdjacency( const int& edge );
     void showAdjacency( void );
+    void mergeSuperNo( const Arestas& aresta );
+    Arestas getRandomAresta( const std::vector<Arestas>& arestas );
 
     inline int getSize( void ) const;
+
     int changeCharToInt( const char& ch );
 
   private:
