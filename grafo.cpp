@@ -50,6 +50,14 @@ void Grafo::kargerAlgorithm( void ) {
   std::vector<Arestas> arestas;
   std::vector<SuperNo> supernos;
 
+  for ( int i = 0; i < int(this->matrix_.size()); ++i ) {
+    SuperNo superno = SuperNo( i );
+
+    superno.vertices_.push_back( superno );
+
+    supernos.push_back( superno );
+  }
+
   for ( int i = 0; i < this->getSize(); ++ i ) {
 
     for ( int j = 0; j < this->getSize(); ++j ) {
@@ -64,39 +72,51 @@ void Grafo::kargerAlgorithm( void ) {
     }
   }
 
-  for ( int i = 0; i < int(this->matrix_.size()); ++i ) {
-    SuperNo superno = SuperNo();
-
-    supernos.push_back( superno );
-  }
-
   // for ( const auto& edge : arestas ) {
   //   cout << edge.i_ << " " << edge.j_ << endl;
   // }
 
   // printf("\n========================\n");
 
-  // for ( const auto& supernos : supernos ) {
-  //   cout << supernos.noId_ << endl;
-  // }
+  for ( const auto& supernos : supernos ) {
+    cout << supernos.noId_ << endl;
+  }
 
   while ( supernos.size() > 2 ) {
     Arestas currentEdge = this->getRandomAresta( arestas );
 
     std::cout << "currentedge: " << currentEdge.i_ << " " << currentEdge.j_ << std::endl;
 
-    this->mergeSuperNo( currentEdge );
+    this->mergeSuperNo( currentEdge, arestas );
+
+    break;
   }
 
 
 }
 
-void Grafo::mergeSuperNo( const Arestas& aresta ) {
-  std::cout << "aresta: " << aresta.i_ << " " << aresta.j_ << std::endl;
+void Grafo::mergeSuperNo( const Arestas& aresta, const std::vector<Arestas>& todasArestas ) {
+  // std::cout << "aresta: " << aresta.i_ << " " << aresta.j_ << std::endl;
 
   SuperNo newSuperNo = SuperNo( aresta.i_, aresta.j_ );
 
+  for ( const auto& edge : todasArestas ) {
+    if ( edge.i_ == aresta.i_ || edge.j_ == aresta.j_ ) {
+      std::cout << "edge: " << edge.i_ << " " << edge.j_ << std::endl;
+      
+      if ( edge.i_ != aresta.i_ ) {
+        newSuperNo.arestas_.push_back( edge );
+      }
 
+      if ( edge.j_ != aresta.j_ ) {
+        newSuperNo.arestas_.push_back( edge );
+      }
+    }
+  }
+
+  for ( const auto& supernos : newSuperNo.arestas_ ) {
+    std::cout << "supernos i: " << supernos.i_ << " j: " << supernos.j_ << std::endl;
+  }
 
 }
 

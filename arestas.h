@@ -6,6 +6,7 @@
 class Arestas {
   public:
     Arestas( void ) {};
+    // Arestas ( const SuperNo& i, const SuperNo& j );
     Arestas ( const int& i, const int& j );
 
     int i_;

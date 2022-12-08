@@ -22,7 +22,7 @@ class Grafo {
     void showMatrix( void );
     void showAdjacency( const int& edge );
     void showAdjacency( void );
-    void mergeSuperNo( const Arestas& aresta );
+    void mergeSuperNo( const Arestas& aresta, const std::vector<Arestas>& todasArestas );
     Arestas getRandomAresta( const std::vector<Arestas>& arestas );
 
     inline int getSize( void ) const;

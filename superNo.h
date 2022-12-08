@@ -2,13 +2,15 @@
 #define SUPERNO_H
 
 #include "arestas.h"
+#include <vector>
 
 class SuperNo {
   public:
     SuperNo( void );
-    SuperNo ( const int& i, const int& j  );
+    SuperNo( const int& i );
+    SuperNo( const SuperNo& i, const SuperNo& j );
 
-    std::vector<int> vertices_;
+    std::vector<SuperNo> vertices_;
     std::vector<Arestas> arestas_;
     int noId_;
 };
