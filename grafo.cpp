@@ -53,8 +53,6 @@ void Grafo::kargerAlgorithm( void ) {
   for ( int i = 0; i < int(this->matrix_.size()); ++i ) {
     SuperNo superno = SuperNo( i );
 
-    superno.vertices_.push_back( superno );
-
     supernos.push_back( superno );
   }
 
@@ -72,52 +70,165 @@ void Grafo::kargerAlgorithm( void ) {
     }
   }
 
-  // for ( const auto& edge : arestas ) {
-  //   cout << edge.i_ << " " << edge.j_ << endl;
-  // }
-
-  // printf("\n========================\n");
-
-  for ( const auto& supernos : supernos ) {
-    cout << supernos.noId_ << endl;
-  }
+  int k = 0;
 
   while ( supernos.size() > 2 ) {
     Arestas currentEdge = this->getRandomAresta( arestas );
 
-    std::cout << "currentedge: " << currentEdge.i_ << " " << currentEdge.j_ << std::endl;
+    // std::cout << "currentedge: " << currentEdge.i_ << " " << currentEdge.j_ << std::endl;
 
-    this->mergeSuperNo( currentEdge, arestas );
+    this->mergeSuperNo( currentEdge, arestas, supernos );
 
-    break;
+
+    for ( const auto& super : supernos ) {
+      std::cout << "super no: " << super.noId_ << std::endl;
+      for ( const auto& edge : super.vertices_ ) {
+        std::cout << edge << std::endl;
+      }
+    }
+
+    for ( const auto& super : supernos ) {
+      std::cout << "super no arestas: " << super.noId_ << std::endl;
+      for ( const auto& edge : super.arestas_ ) {
+        std::cout << "edge i: " << edge.i_ << " edge j: " << edge.j_ << std::endl;
+      }
+    }
+
+    ++k;
+
+    if ( k == 2 ) {
+
+      break;
+    }
+
+    // break;
+
+    // std::cout << "sizearray: " << supernos.size() << std::endl;
   }
 
+  std::cout << "Corte minimo: " << arestas.size() << std::endl;
+
+  // for ( const auto& super : supernos ) {
+  //   std::cout << "super no: " << super.noId_ << std::endl;
+  //   for ( const auto& edge : super.vertices_ ) {
+  //     std::cout << edge << std::endl;
+  //   }
+  // }
+
+  // for ( const auto& super : supernos ) {
+  //   std::cout << "super no arestas: " << super.noId_ << std::endl;
+  //   for ( const auto& edge : super.arestas_ ) {
+  //     std::cout << "edge i: " << edge.i_ << " edge j: " << edge.j_ << std::endl;
+  //   }
+  // }
 
 }
 
-void Grafo::mergeSuperNo( const Arestas& aresta, const std::vector<Arestas>& todasArestas ) {
-  // std::cout << "aresta: " << aresta.i_ << " " << aresta.j_ << std::endl;
+void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasArestas, std::vector<SuperNo>& todosNos ) {
+  std::cout << "aresta: " << aresta.i_ << " " << aresta.j_ << std::endl;
+
+  if ( aresta.i_ == -1 ) {
+    return;
+  }
 
   SuperNo newSuperNo = SuperNo( aresta.i_, aresta.j_ );
 
-  for ( const auto& edge : todasArestas ) {
-    if ( edge.i_ == aresta.i_ || edge.j_ == aresta.j_ ) {
-      std::cout << "edge: " << edge.i_ << " " << edge.j_ << std::endl;
-      
-      if ( edge.i_ != aresta.i_ ) {
-        newSuperNo.arestas_.push_back( edge );
-      }
+  // todo: achar o super no e cortar a arestas entre eles e adicionar os vertices deles
 
-      if ( edge.j_ != aresta.j_ ) {
+  SuperNo aux1;
+  SuperNo aux2;
+
+  for ( const auto& super : todosNos) {
+    if ( super.noId_ == aresta.i_ ) {
+      aux1 = super;
+    }
+
+    if ( super.noId_ == aresta.j_ ) {
+      aux2 = super;
+    }
+  }
+
+  if ( aux1.arestas_.size() > 1 ) {
+    for ( const auto& edge : aux1.arestas_ ) {
+      if ( aux2.noId_ != edge.i_ || aux2.noId_ != edge.j_ ) {
         newSuperNo.arestas_.push_back( edge );
       }
     }
   }
 
-  for ( const auto& supernos : newSuperNo.arestas_ ) {
-    std::cout << "supernos i: " << supernos.i_ << " j: " << supernos.j_ << std::endl;
+  if ( aux2.arestas_.size() > 1 ) {
+    for ( const auto& edge : aux2.arestas_ ) {
+      if ( aux1.noId_ != edge.i_ || aux1.noId_ != edge.j_ ) {
+        newSuperNo.arestas_.push_back( edge );
+      }
+    }
   }
 
+  for ( int i = 0; i < int(todosNos.size()); ++i ) {
+    if ( todosNos[i].noId_ == aresta.i_ || todosNos[i].noId_ == aresta.j_ ) {
+      todosNos[i].noId_ = -1;
+    }
+  }
+
+  int k = 0;
+
+  while ( k < int(todosNos.size()) ) {
+    
+    if ( todosNos[k].noId_ == -1 ) {
+      todosNos.erase( todosNos.begin() + k );
+      k = 0;
+      continue;
+    }
+
+    k++;
+  }
+
+  for ( int i = 0; i < int(todasArestas.size()); ++i ) {
+
+    if ( todasArestas[i].i_ == -1 ) continue;
+
+    if ( todasArestas[i].i_ == aresta.i_ || todasArestas[i].j_ == aresta.j_ ) {
+      // std::cout << "edge: " << todasArestas[i].i_ << " " << todasArestas[i].j_ << std::endl;
+      
+      if ( todasArestas[i].i_ == aresta.i_ && todasArestas[i].j_ != aresta.j_ ) {
+        // std::cout << "aresta here: " << todasArestas[i].j_ << std::endl;
+        todasArestas[i].i_ = aresta.i_ + aresta.j_ + this->size_;
+      }
+
+      if ( todasArestas[i].j_ == aresta.j_ && todasArestas[i].i_ != aresta.i_ ) {
+        // std::cout << "aresta here lado direito: " << todasArestas[i].i_ << std::endl;
+        todasArestas[i].j_ = aresta.i_ + aresta.j_ + this->size_;
+      }
+
+    }
+  }
+
+  for ( int i = 0; i < int(todasArestas.size()); ++i ) {
+    if ( todasArestas[i].i_ == aresta.i_ + aresta.j_ + this->size_ ) {
+      newSuperNo.arestas_.push_back( todasArestas[i] );
+    }
+
+    if ( todasArestas[i].j_ == aresta.i_ + aresta.j_ + this->size_ ) {
+      newSuperNo.arestas_.push_back( todasArestas[i] );
+    }
+  }
+
+  int l = 0;
+
+  while ( l < int(todasArestas.size()) ) {
+    
+    if ( todasArestas[l].i_ == aresta.i_ || todasArestas[l].j_ == aresta.j_) {
+      std::cout << "aresta i " << aresta.i_ << " aresta j " << aresta.j_ << std::endl;
+      std::cout << "edge: " << todasArestas[l].i_ << " " << todasArestas[l].j_ << std::endl;
+      todasArestas.erase( todasArestas.begin() + l );
+      l = 0;
+      continue;
+    }
+
+    l++;
+  }
+
+  todosNos.push_back( newSuperNo );
 }
 
 Arestas Grafo::getRandomAresta( const std::vector<Arestas>& arestas ) {

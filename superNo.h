@@ -8,9 +8,9 @@ class SuperNo {
   public:
     SuperNo( void );
     SuperNo( const int& i );
-    SuperNo( const SuperNo& i, const SuperNo& j );
+    SuperNo( const int& i, const int& j );
 
-    std::vector<SuperNo> vertices_;
+    std::vector<int> vertices_;
     std::vector<Arestas> arestas_;
     int noId_;
 };

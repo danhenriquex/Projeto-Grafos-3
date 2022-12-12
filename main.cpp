@@ -13,7 +13,7 @@
 
 int main( void ) {
 
-    Grafo grafo = Grafo("./arquivos_testes/graph_type1_1.txt");
+    Grafo grafo = Grafo("./arquivos_testes/teste.txt");
 
     grafo.showAdjacency();
     

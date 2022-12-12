@@ -6,6 +6,7 @@
 #include <bits/stdc++.h>
 
 #include "arestas.h"
+#include "superNo.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ class Grafo {
     void showMatrix( void );
     void showAdjacency( const int& edge );
     void showAdjacency( void );
-    void mergeSuperNo( const Arestas& aresta, const std::vector<Arestas>& todasArestas );
+    void mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasArestas, std::vector<SuperNo>& todosNos );
     Arestas getRandomAresta( const std::vector<Arestas>& arestas );
 
     inline int getSize( void ) const;
