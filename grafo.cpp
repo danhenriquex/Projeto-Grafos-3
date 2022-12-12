@@ -133,7 +133,7 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
 
   SuperNo newSuperNo = SuperNo( aresta.i_, aresta.j_ );
 
-  // todo: achar o super no e cortar a arestas entre eles e adicionar os vertices deles
+  // ! acha os supernos que contem a aresta
 
   SuperNo aux1;
   SuperNo aux2;
@@ -148,6 +148,8 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
     }
   }
 
+  // ! verifica os vizinhos do superno 1 e adiciona essas arestas no novo super no
+
   if ( aux1.arestas_.size() > 1 ) {
     for ( const auto& edge : aux1.arestas_ ) {
       if ( aux2.noId_ != edge.i_ || aux2.noId_ != edge.j_ ) {
@@ -155,6 +157,8 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
       }
     }
   }
+
+    // ! verifica os vizinhos do superno 2 e adiciona essas arestas no novo super no
 
   if ( aux2.arestas_.size() > 1 ) {
     for ( const auto& edge : aux2.arestas_ ) {
@@ -164,6 +168,8 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
     }
   }
 
+  // ! marca os vertices que precisam ser removidos da lista
+
   for ( int i = 0; i < int(todosNos.size()); ++i ) {
     if ( todosNos[i].noId_ == aresta.i_ || todosNos[i].noId_ == aresta.j_ ) {
       todosNos[i].noId_ = -1;
@@ -171,6 +177,8 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
   }
 
   int k = 0;
+
+  // ! remove os vertices que foram marcados
 
   while ( k < int(todosNos.size()) ) {
     
@@ -187,8 +195,12 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
 
     if ( todasArestas[i].i_ == -1 ) continue;
 
+    // ! verifica as conexoes do novo superno com os outros supernos
+
     if ( todasArestas[i].i_ == aresta.i_ || todasArestas[i].j_ == aresta.j_ ) {
       // std::cout << "edge: " << todasArestas[i].i_ << " " << todasArestas[i].j_ << std::endl;
+
+      // ! esses 2 ifs atualizam as arestas que estao ligadas ao novo superno
       
       if ( todasArestas[i].i_ == aresta.i_ && todasArestas[i].j_ != aresta.j_ ) {
         // std::cout << "aresta here: " << todasArestas[i].j_ << std::endl;
@@ -203,6 +215,8 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
     }
   }
 
+  // ! adiciona as arestas do novo superno
+
   for ( int i = 0; i < int(todasArestas.size()); ++i ) {
     if ( todasArestas[i].i_ == aresta.i_ + aresta.j_ + this->size_ ) {
       newSuperNo.arestas_.push_back( todasArestas[i] );
@@ -212,6 +226,8 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
       newSuperNo.arestas_.push_back( todasArestas[i] );
     }
   }
+
+  // ! deleta as arestas entre eles
 
   int l = 0;
 
