@@ -244,6 +244,8 @@ void Grafo::mergeSuperNo( const Arestas& aresta, std::vector<Arestas>& todasAres
     l++;
   }
 
+  // ! adiciona o novo superno na lista de supernos
+
   todosNos.push_back( newSuperNo );
 }
 
