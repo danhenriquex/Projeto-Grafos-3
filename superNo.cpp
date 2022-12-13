@@ -2,7 +2,8 @@
 
 SuperNo::SuperNo( void ) {}
 
-SuperNo::SuperNo( const int& i, const int& j ) {
+SuperNo::SuperNo( const int& i ) {
+  this->noId_ = i;
   this->vertices_.push_back( i ); 
-  this->vertices_.push_back( j ); 
+  
 }

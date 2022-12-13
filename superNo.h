@@ -6,7 +6,7 @@
 class SuperNo {
   public:
     SuperNo( void );
-    SuperNo ( const int& i, const int& j  );
+    SuperNo ( const int& i );
 
     std::vector<int> vertices_;
     std::vector<Arestas> arestas_;

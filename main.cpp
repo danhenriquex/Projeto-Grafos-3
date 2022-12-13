@@ -14,8 +14,7 @@
 int main( void ) {
 
     Grafo grafo = Grafo("./arquivos_testes/graph_type1_1.txt");
-
-    grafo.showAdjacency();
+    srand(time(0));
     
     grafo.kargerAlgorithm();
     
