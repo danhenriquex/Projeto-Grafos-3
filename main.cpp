@@ -17,6 +17,8 @@ int main( void ) {
     srand(time(0));
     
     grafo.kargerAlgorithm();
+
+    // grafo.randomizedNaiveAlgorithm();
     
     return 0;
 } 

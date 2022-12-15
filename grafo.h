@@ -19,12 +19,15 @@ class Grafo {
     void bfs( const int& vertice );
     void busca( const int& edge, int* PE, int* PS, int* Pai );
     void kargerAlgorithm( void );
+    void randomizedNaiveAlgorithm( void );
 
     void showMatrix( void );
     void showAdjacency( const int& edge );
     void showAdjacency( void );
-    void mergeSuperNo( int i, int j, std::vector<SuperNo>& supernos );
+    void mergeSuperNo( const int& i, const int& j, std::vector<SuperNo>& supernos );
     Arestas getRandomAresta( const std::vector<Arestas>& arestas);
+    SuperNo getRandomVertice( const std::vector<SuperNo>& vertices );
+    std::vector<Arestas> getArestas( const SuperNo& superno1, const SuperNo& superno2 );
 
     inline int getSize( void ) const;
 

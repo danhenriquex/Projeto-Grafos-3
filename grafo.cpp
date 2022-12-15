@@ -46,6 +46,61 @@ Grafo::Grafo( const string& file ) {
   }
 }
 
+std::vector<Arestas> Grafo::getArestas( const SuperNo& superno1, const SuperNo& superno2 ) {
+  std::vector<Arestas> arestas;
+
+  for ( int i = 0; i < int(superno1.vertices_.size()); ++i ) {
+    for ( int j = 0; j < int(superno2.vertices_.size()); ++j ) {
+      if ( this->matrix_[superno1.vertices_[i]][superno2.vertices_[j]] == 1 ) {
+        Arestas aresta = Arestas( superno1.vertices_[i], superno2.vertices_[j] );
+        arestas.push_back( aresta );
+      }
+    }
+  }
+
+  return arestas;
+}
+
+void Grafo::randomizedNaiveAlgorithm( void ) {
+  srand(time(0));
+
+  std::vector<SuperNo> supernos;
+  SuperNo superno1 = SuperNo( 0 );
+  SuperNo superno2 = SuperNo( 1 );
+
+  int k = 0;
+
+  for ( int i = 2; i < int(this->matrix_.size()); ++i ) {
+
+    k = rand() % this->matrix_.size();
+
+    if ( k % 2 == 0 ) {
+      superno1.vertices_.push_back( i );
+    } 
+
+    if ( k % 2 != 0 ) {
+      superno2.vertices_.push_back( i );
+    } 
+  } 
+
+  supernos.push_back( superno1 );
+  supernos.push_back( superno2 );
+
+  const std::vector<Arestas> arestas = this->getArestas( superno1, superno2 );
+
+  for (int i = 0; i < int(supernos.size()); i++){
+    std::cout << "SuperNo"<< i << ":";
+    for (int j = 0; j < int(supernos[i].vertices_.size()); j++){
+      std::cout<< supernos[i].vertices_[j] + 1<<", ";
+    }
+    std::cout << std::endl;
+  }
+
+  for ( auto const& edge : arestas ) {
+    std::cout << "Aresta: " << edge.i_ + 1 << " " << edge.j_ + 1 << std::endl;
+  }
+}
+
 void Grafo::kargerAlgorithm( void ) {
   std::vector<Arestas> arestas;
   std::vector<SuperNo> supernos;
@@ -65,17 +120,6 @@ void Grafo::kargerAlgorithm( void ) {
     }
   }
 
-
-
-  // for ( const auto& edge : arestas ) {
-  //   cout << edge.i_ << " " << edge.j_ << endl;
-  // }
-
-  // printf("\n========================\n");
-
-  // for ( const auto& supernos : supernos ) {
-  //   cout << supernos.noId_ << endl;
-  // }
   int maior = 0;
   int menor = 0;
 
@@ -109,31 +153,36 @@ void Grafo::kargerAlgorithm( void ) {
     }
     int i = 0;
     while (i < int(arestas.size())){
-      if(arestas[i].i_ == arestas[i].j_){
+      if(arestas[i].i_ == arestas[i].j_ || arestas[i].j_ == arestas[i].i_){
         arestas.erase(arestas.begin()+i);
         i = 0 ;
       }else{
         i++;
       }
     }
-    cout << "Arestas: "<< arestas.size() << endl;
   }
 
-  for (int i = 0; i < 2; i++){
+  for (int i = 0; i < int(supernos.size()); i++){
     std::cout << "SuperNo"<< i << ":";
     for (int j = 0; j < int(supernos[i].vertices_.size()); j++){
       std::cout<< supernos[i].vertices_[j] + 1<<", ";
     }
     std::cout << std::endl;
   }
+
+  const std::vector<Arestas> arestasAux = this->getArestas( supernos[0], supernos[1] );
+
+  for ( auto const& edge : arestasAux ) { 
+    std::cout << "Aresta: " << edge.i_ + 1 << " " << edge.j_ + 1 << std::endl;
+  }
 }
 
-void Grafo::mergeSuperNo( int i, int j, std::vector<SuperNo>& supernos ) {
+void Grafo::mergeSuperNo( const int& i, const int& j, std::vector<SuperNo>& supernos ) {
 
   for (auto& edge : supernos[j].vertices_){
     supernos[i].vertices_.push_back(edge);
   }
-  supernos.erase (supernos.begin()+j);
+  supernos.erase(supernos.begin()+j);
 
 }
 
@@ -142,6 +191,12 @@ Arestas Grafo::getRandomAresta( const std::vector<Arestas>& arestas ) {
   return arestas[randomIndex];
 }
 
+SuperNo Grafo::getRandomVertice( const std::vector<SuperNo>& vertices ) {
+  srand(time(NULL));
+  
+  int randomIndex = rand() % vertices.size();
+  return vertices[randomIndex];
+}
 
 void Grafo::busca( const int& v, int* PE, int* PS, int* Pai ) {
   static int time = time + 1;
