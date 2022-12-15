@@ -20,6 +20,8 @@ int main( void ) {
     Result current = Result();
     Result best = Result();
     
+    printf("\n=====Karger====\n");
+
 
     for ( int i = 0; i < 1000; ++i ) {
 
@@ -37,7 +39,6 @@ int main( void ) {
 
     std::cout << "Best: " << best.arestas_.size() << std::endl;
 
-    // show supernos
     for ( int i = 0; i < int(best.superno1_.vertices_.size()); ++i ) {
         std::cout << best.superno1_.vertices_[i] + 1 <<  " ";
     }
@@ -70,7 +71,6 @@ int main( void ) {
 
     std::cout << "Best: " << bestRandom.arestas_.size() << std::endl;
 
-    // show supernos
     for ( int i = 0; i < int(bestRandom.superno1_.vertices_.size()); ++i ) {
         std::cout << bestRandom.superno1_.vertices_[i] + 1 <<  " ";
     }
@@ -83,7 +83,5 @@ int main( void ) {
 
     printf("\n");
 
-    // grafo.randomizedNaiveAlgorithm();
-    
     return 0;
 } 

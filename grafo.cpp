@@ -89,18 +89,6 @@ Result Grafo::randomizedNaiveAlgorithm( void ) {
 
   const std::vector<Arestas> arestasAux = this->getArestas( superno1, superno2 );
 
-  // for (int i = 0; i < int(supernos.size()); i++){
-  //   std::cout << "SuperNo"<< i << ":";
-  //   for (int j = 0; j < int(supernos[i].vertices_.size()); j++){
-  //     std::cout<< supernos[i].vertices_[j] + 1<<", ";
-  //   }
-  //   std::cout << std::endl;
-  // }
-
-  // for ( auto const& edge : arestas ) {
-  //   std::cout << "Aresta: " << edge.i_ + 1 << " " << edge.j_ + 1 << std::endl;
-  // }
-
   Result result = Result( supernos[0], supernos[1], arestasAux );
 
   return result;
@@ -158,7 +146,7 @@ Result Grafo::kargerAlgorithm( void ) {
     }
     int i = 0;
     while (i < int(arestas.size())){
-      if(arestas[i].i_ == arestas[i].j_ || arestas[i].j_ == arestas[i].i_){
+      if(arestas[i].i_ == arestas[i].j_){
         arestas.erase(arestas.begin()+i);
         i = 0 ;
       }else{
@@ -167,19 +155,7 @@ Result Grafo::kargerAlgorithm( void ) {
     }
   }
 
-  // for (int i = 0; i < int(supernos.size()); i++){
-  //   std::cout << "SuperNo"<< i << ":";
-  //   for (int j = 0; j < int(supernos[i].vertices_.size()); j++){
-  //     std::cout<< supernos[i].vertices_[j] + 1<<", ";
-  //   }
-  //   std::cout << std::endl;
-  // }
-
   const std::vector<Arestas> arestasAux = this->getArestas( supernos[0], supernos[1] );
-
-  // for ( auto const& edge : arestasAux ) { 
-  //   std::cout << "Aresta: " << edge.i_ + 1 << " " << edge.j_ + 1 << std::endl;
-  // }
 
   std::sort( supernos[0].vertices_.begin(), supernos[0].vertices_.end() );
   std::sort( supernos[1].vertices_.begin(), supernos[1].vertices_.end() );
