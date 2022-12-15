@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cstdlib>
 #include "superNo.h"
+#include "result.h"
 
 
 Grafo::Grafo( void ) {
@@ -61,7 +62,7 @@ std::vector<Arestas> Grafo::getArestas( const SuperNo& superno1, const SuperNo& 
   return arestas;
 }
 
-void Grafo::randomizedNaiveAlgorithm( void ) {
+Result Grafo::randomizedNaiveAlgorithm( void ) {
   srand(time(0));
 
   std::vector<SuperNo> supernos;
@@ -86,22 +87,26 @@ void Grafo::randomizedNaiveAlgorithm( void ) {
   supernos.push_back( superno1 );
   supernos.push_back( superno2 );
 
-  const std::vector<Arestas> arestas = this->getArestas( superno1, superno2 );
+  const std::vector<Arestas> arestasAux = this->getArestas( superno1, superno2 );
 
-  for (int i = 0; i < int(supernos.size()); i++){
-    std::cout << "SuperNo"<< i << ":";
-    for (int j = 0; j < int(supernos[i].vertices_.size()); j++){
-      std::cout<< supernos[i].vertices_[j] + 1<<", ";
-    }
-    std::cout << std::endl;
-  }
+  // for (int i = 0; i < int(supernos.size()); i++){
+  //   std::cout << "SuperNo"<< i << ":";
+  //   for (int j = 0; j < int(supernos[i].vertices_.size()); j++){
+  //     std::cout<< supernos[i].vertices_[j] + 1<<", ";
+  //   }
+  //   std::cout << std::endl;
+  // }
 
-  for ( auto const& edge : arestas ) {
-    std::cout << "Aresta: " << edge.i_ + 1 << " " << edge.j_ + 1 << std::endl;
-  }
+  // for ( auto const& edge : arestas ) {
+  //   std::cout << "Aresta: " << edge.i_ + 1 << " " << edge.j_ + 1 << std::endl;
+  // }
+
+  Result result = Result( supernos[0], supernos[1], arestasAux );
+
+  return result;
 }
 
-void Grafo::kargerAlgorithm( void ) {
+Result Grafo::kargerAlgorithm( void ) {
   std::vector<Arestas> arestas;
   std::vector<SuperNo> supernos;
 
@@ -162,19 +167,26 @@ void Grafo::kargerAlgorithm( void ) {
     }
   }
 
-  for (int i = 0; i < int(supernos.size()); i++){
-    std::cout << "SuperNo"<< i << ":";
-    for (int j = 0; j < int(supernos[i].vertices_.size()); j++){
-      std::cout<< supernos[i].vertices_[j] + 1<<", ";
-    }
-    std::cout << std::endl;
-  }
+  // for (int i = 0; i < int(supernos.size()); i++){
+  //   std::cout << "SuperNo"<< i << ":";
+  //   for (int j = 0; j < int(supernos[i].vertices_.size()); j++){
+  //     std::cout<< supernos[i].vertices_[j] + 1<<", ";
+  //   }
+  //   std::cout << std::endl;
+  // }
 
   const std::vector<Arestas> arestasAux = this->getArestas( supernos[0], supernos[1] );
 
-  for ( auto const& edge : arestasAux ) { 
-    std::cout << "Aresta: " << edge.i_ + 1 << " " << edge.j_ + 1 << std::endl;
-  }
+  // for ( auto const& edge : arestasAux ) { 
+  //   std::cout << "Aresta: " << edge.i_ + 1 << " " << edge.j_ + 1 << std::endl;
+  // }
+
+  std::sort( supernos[0].vertices_.begin(), supernos[0].vertices_.end() );
+  std::sort( supernos[1].vertices_.begin(), supernos[1].vertices_.end() );
+
+  Result result = Result( supernos[0], supernos[1], arestasAux );
+
+  return result;
 }
 
 void Grafo::mergeSuperNo( const int& i, const int& j, std::vector<SuperNo>& supernos ) {

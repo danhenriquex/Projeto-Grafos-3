@@ -7,9 +7,9 @@
 
 #include "arestas.h"
 #include "superNo.h"
+#include "result.h"
 
 using namespace std;
-
 class Grafo {
   public:
     Grafo( void );
@@ -18,8 +18,8 @@ class Grafo {
     void dfs( const int& vertice );
     void bfs( const int& vertice );
     void busca( const int& edge, int* PE, int* PS, int* Pai );
-    void kargerAlgorithm( void );
-    void randomizedNaiveAlgorithm( void );
+    Result kargerAlgorithm( void );
+    Result randomizedNaiveAlgorithm( void );
 
     void showMatrix( void );
     void showAdjacency( const int& edge );
@@ -38,3 +38,4 @@ class Grafo {
     std::vector<std::vector<int>> matrix_;
     std::list<int>* adj_;
 };
+
