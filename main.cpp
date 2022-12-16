@@ -4,20 +4,20 @@
 /*
     Universidade Federal da Paraíba
     Trabalho da disciplina de Grafos
-    Tema: Busca em Grafos
-    Linguagem Utilizada: C++.
+    Tema: Implementação e análise empı́rica do algoritmo de Karger
+    Linguagem Utilizada: C++ e Python.
     Desenvolvido por:
     
-        Arthur Ricardo, 20170033039
-        Danilo Henrique, 20170140478
+        Arthur Ricardo 20170033039
+        Danilo Henrique 20170140478
 */
 
 int main( void ) {
 
-    Grafo grafo = Grafo("./instancias/in/graph_type2_3");
+    Grafo grafo = Grafo("./instancias/in/graph_type1_2");
     srand(time(0));
     int k = 0;
-    const int optimalSolution = 9;
+    const int optimalSolution = 2;
     const int maxItr = 10000;
 
     Result current = Result();
@@ -108,7 +108,7 @@ int main( void ) {
       file.close();
     }
     
-    printf("\n");
+    printf("\n");    
 
     return 0;
 } 
