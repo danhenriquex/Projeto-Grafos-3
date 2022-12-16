@@ -14,73 +14,100 @@
 
 int main( void ) {
 
-    Grafo grafo = Grafo("./arquivos_testes/graph_type2_1.txt");
+    Grafo grafo = Grafo("./instancias/in/graph_type2_3");
     srand(time(0));
+    int k = 0;
+    const int optimalSolution = 9;
+    const int maxItr = 10000;
 
     Result current = Result();
     Result best = Result();
     
     printf("\n=====Karger====\n");
 
+    for ( int n = 5; n < 100; n=n+5 ) {
+      k = 0;
+      for ( int j = 0; j < maxItr; ++j ) {
 
-    for ( int i = 0; i < 1000; ++i ) {
+          current = Result();
+          best = Result();
 
-      current = Result();
-      best = Result();
+          for ( int l = 0; l < n; ++l ) {
+              current = grafo.kargerAlgorithm();
+              
+              if ( current.arestas_.size() < best.arestas_.size() || best.arestas_.size() == 0 ) {
+                  best = current;
+              }
+          }
 
-      for ( int j = 0; j < 10; ++j ) {
-        current = grafo.kargerAlgorithm();
-        
-        if ( current.arestas_.size() < best.arestas_.size() || best.arestas_.size() == 0 ) {
-            best = current;
-        }
+          if ( int(best.arestas_.size()) == optimalSolution ) {
+              ++k;
+          }
+      }
+
+      std::cout << "Best: " << best.arestas_.size() << std::endl;
+
+      double result = (double) k / maxItr;
+
+      std::cout << "Optimal Solution: " << result * 100 << "% " << " k: " << k << " n: " << n << std::endl;
+
+      printf("\n");
+
+      std::ofstream file;
+      file.open("./resultados/resultados_type2_3_karge.txt", std::ios::app);
+      file << n << " " << result << std::endl;
+      file << "\n";
+      file.close();
+
+      if ( result == 1 ) {
+        break;
       }
     }
 
-    std::cout << "Best: " << best.arestas_.size() << std::endl;
-
-    for ( int i = 0; i < int(best.superno1_.vertices_.size()); ++i ) {
-        std::cout << best.superno1_.vertices_[i] + 1 <<  " ";
-    }
-
-    printf("\n");
-    
-    for ( int i = 0; i < int(best.superno2_.vertices_.size()); ++i ) {
-        std::cout << best.superno2_.vertices_[i] + 1 << " ";
-    }
+  
 
     printf("\n=====Random====\n");
 
     Result currentRandom = Result();
     Result bestRandom = Result();
-    
 
-    for ( int i = 0; i < 1000; ++i ) {
+    k = 0;
 
-      currentRandom = Result();
-      bestRandom = Result();
+    for ( int n = 5; n < 100; n=n+5 ) {
+      k = 0;
+      for ( int j = 0; j < maxItr; ++j ) {
 
-      for ( int j = 0; j < 10; ++j ) {
-        currentRandom = grafo.randomizedNaiveAlgorithm();
-        
-        if ( currentRandom.arestas_.size() < bestRandom.arestas_.size() || bestRandom.arestas_.size() == 0 ) {
-            bestRandom = currentRandom;
-        }
+          currentRandom = Result();
+          bestRandom = Result();
+
+          for ( int k = 0; k < n; ++k ) {
+              currentRandom = grafo.randomizedNaiveAlgorithm();
+              
+              if ( currentRandom.arestas_.size() < bestRandom.arestas_.size() || bestRandom.arestas_.size() == 0 ) {
+                  bestRandom = currentRandom;
+              }
+          }
+
+          if ( int(bestRandom.arestas_.size()) == optimalSolution ) {
+              ++k;
+          }
       }
+
+      std::cout << "Best: " << bestRandom.arestas_.size() << std::endl;
+
+      double result = (double) k / maxItr;
+
+      std::cout << "Optimal Solution: " << result * 100 << "% " << " k: " << k << " n: " << n << std::endl;
+
+      printf("\n");
+
+      std::ofstream file;
+      file.open("./resultados/resultados_type2_3_random.txt", std::ios::app);
+      file << n << " " << result << std::endl;
+      file << "\n";
+      file.close();
     }
-
-    std::cout << "Best: " << bestRandom.arestas_.size() << std::endl;
-
-    for ( int i = 0; i < int(bestRandom.superno1_.vertices_.size()); ++i ) {
-        std::cout << bestRandom.superno1_.vertices_[i] + 1 <<  " ";
-    }
-
-    printf("\n");
     
-    for ( int i = 0; i < int(bestRandom.superno2_.vertices_.size()); ++i ) {
-        std::cout << bestRandom.superno2_.vertices_[i] + 1 << " ";
-    }
-
     printf("\n");
 
     return 0;

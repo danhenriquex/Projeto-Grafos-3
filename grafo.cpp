@@ -127,7 +127,7 @@ Result Grafo::kargerAlgorithm( void ) {
       maior = currentEdge.i_;
     }
     
-    this->mergeSuperNo(menor, maior, supernos );
+    this->mergeSuperNo( menor, maior, supernos );
 
     for (auto& edge : arestas){
 
@@ -138,7 +138,7 @@ Result Grafo::kargerAlgorithm( void ) {
         edge.j_ = menor;
       }
       if(edge.i_ > maior){
-      edge.i_ = edge.i_ -1;
+        edge.i_ = edge.i_ -1;
       }
       if(edge.j_ > maior){
         edge.j_ = edge.j_ -1;
